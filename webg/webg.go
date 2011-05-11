@@ -15,13 +15,15 @@ package webg
 //   limitations under the License.
 
 import (
-//  "fmt"
+  "io"
   "http"
   "image"
   "image/png"
   "encoding/hex"
   "strings"
   "strconv"
+// 	"appengine"
+//	"appengine/memcache"
 )
 
 // Getting values from HTTP GET. DRY, isn't it?
@@ -81,14 +83,25 @@ func init() {
   http.HandleFunc("/make", handler)
 }
 
+func error(w http.ResponseWriter, t string) {
+	w.WriteHeader(http.StatusInternalServerError)
+	w.Header().Set("Content-Type", "text/plain")
+	io.WriteString(w, t)
+}
+
 func handler(w http.ResponseWriter, r *http.Request) {
   width := getnum(r, "width", 1)
   height := getnum(r, "height", 100)
+  if width > 4096 || height > 4096 {
+    error(w, "Too big!")
+    return
+  }
   start := getcolor(r, "start", "eeeeec")
   end := getcolor(r, "end", "d3d7cf")
   direction := getstr(r, "direction", "down")
+//  cachekey := fmt.Sprintf("%sx%s_%s_%s_%s", strconv.Itoa(width), strconv.Itoa(height), start, end, direction)
+  w.Header().Set("Content-Type", "image/png")
   image := image.NewNRGBA(width, height)
   gradient(image, start, end, direction)
-  w.Header().Set("Content-Type", "image/png")
   _ = png.Encode(w, image)
 }
