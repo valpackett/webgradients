@@ -1,0 +1,19 @@
+application: webgradients
+version: 1
+runtime: go
+api_version: 1
+
+handlers:
+- url: /site_media
+  static_dir: site_media
+
+- url: /favicon.ico
+  static_files: favicon.ico
+  upload: favicon.ico
+
+- url: /
+  static_files: index.html
+  upload: index.html
+
+- url: /.*
+  script: _go_app
