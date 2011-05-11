@@ -43,17 +43,21 @@ func gradient(i *image.NRGBA, s string, e string, horiz bool, inv bool) {
   }
   height := i.Rect.Max.Y
   width := i.Rect.Max.X
+  wh := height
+  if horiz == true {
+    wh = width
+  }
   for y := 0; y < height; y++ {
     for x := 0; x < width; x++ {
-      which := y*i.Stride+x
+      d := y
       if horiz == true {
-        which = x*i.Stride+y
+        d = x
       }
-      i.Pix[which] = image.NRGBAColor{
-        uint8(int(start.R) + int(float32(y) / float32(height) * float32(int(end.R) - int(start.R)))),
-        uint8(int(start.G) + int(float32(y) / float32(height) * float32(int(end.G) - int(start.G)))),
-        uint8(int(start.B) + int(float32(y) / float32(height) * float32(int(end.B) - int(start.B)))),
-        255}
+      i.Set(x, y, image.NRGBAColor{
+        uint8(int(start.R) + int(float32(d) / float32(wh) * float32(int(end.R) - int(start.R)))),
+        uint8(int(start.G) + int(float32(d) / float32(wh) * float32(int(end.G) - int(start.G)))),
+        uint8(int(start.B) + int(float32(d) / float32(wh) * float32(int(end.B) - int(start.B)))),
+        255})
     }
   }
 }
