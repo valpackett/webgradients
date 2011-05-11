@@ -5,7 +5,6 @@
     <meta charset="UTF-8" />
     <meta name="description" content="A tool for creating simple and smooth PNG gradients." />
     <meta name="keywords" content="gradient, graphics, png, webdev, css, web, tool" />
-    <link rel="shortcut icon" href="/site_media/favicon.png" type="image/png" />
     <link rel="stylesheet" href="/site_media/style.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="http://myfreeweb.ru/media/mfwjs/lb/jquery.lightbox-0.5.css" type="text/css" media="screen" />
     <script src="/site_media/modernizr.js" type="text/javascript"></script>
@@ -16,33 +15,33 @@
   	    <h1>Web Gradients</h1>
       </header>
       <div>
-	<p>Web Gradients is a tool for creating simple and smooth <abbr title="Portable Network Graphics">PNG</abbr> linear gradients with plain <abbr title="HyperText Transfer Protocol">HTTP</abbr> requests (or this page).</p>
-	<p>Just a GET to /make?width=(pixels)&amp;height=(pixels)&amp;start=(hex)&amp;end=(hex)&direction=(up|down|left|right). All parameters are optional. Default width is 1 pixel, height - 100. Default start color is <span class="advice" style="color: #eeeeec;">eeeeec</span>, end is <span class="advice" style="color: #d3d7cf;">d3d7cf</span>.</p>
-	<section id="demos">
-	  <div><img class="gradient" src="/make?width=150&amp;height=150" alt="Example" title="Example of a 150*150px gradient displayed with img tag" /></div>
-	  <div id="biggr" class="gradient" title="Example of a 1px wide gradient repeated by CSS" style="background: url('/make?height=150&amp;end=fcaf3e') repeat-x; "></div>
-	</section>
-	<section id="tryout">
-	  <form id="tryform" method="GET" action="/make">
-	    <input name="width"  value="320" type="number" maxlength="3" />* <span class="swap" id="sizeswap">&larr;&rarr;</span>
-	    <input name="height" value="240" type="number" maxlength="3" />px&nbsp;/&nbsp;
-	    <input name="start"  value="#fcaf3e" type="color" maxlength="7" /> <span class="swap" id="colswap">&larr;&rarr;</span>
-      <input name="end"    value="#f57900" type="color" maxlength="7" />
-      <select name="direction">
-        <option value="up">Up</option>
-        <option value="down" selected="selected">Down</option>
-        <option value="left">Left</option>
-        <option value="right">Right</option>
-      </select>
-	    <button type="submit">Create!</button>
-	  </form>
-	</section>
+	      <p>Web Gradients is a tool for creating simple and smooth <abbr title="Portable Network Graphics">PNG</abbr> linear gradients with plain <abbr title="HyperText Transfer Protocol">HTTP</abbr> requests (or this page).</p>
+	      <p>Just a GET to /make?width=(pixels)&amp;height=(pixels)&amp;start=(hex)&amp;end=(hex)&direction=(up|down|left|right). All parameters are optional. Default width is 1 pixel, height - 100. Default start color is <span class="advice" style="color: #eeeeec;">eeeeec</span>, end is <span class="advice" style="color: #d3d7cf;">d3d7cf</span>, direction is down.</p>
+	      <section id="demos">
+          <div><img class="gradient" src="/make?width=150&amp;height=150" alt="Example" title="Example of a 150*150px gradient displayed with img tag" /></div>
+          <div id="biggr" class="gradient" title="Example of a 1px wide gradient repeated by CSS" style="background: url('/make?height=150&amp;end=fcaf3e') repeat-x; "></div>
+        </section>
+        <section id="tryout">
+          <form id="tryform" method="GET" action="/make">
+            <input name="width"  value="320" type="number" maxlength="3" />* <span class="swap" id="sizeswap">&larr;&rarr;</span>
+            <input name="height" value="240" type="number" maxlength="3" />px&nbsp;/&nbsp;
+            <input name="start"  value="#fcaf3e" type="color" maxlength="7" /> <span class="swap" id="colswap">&larr;&rarr;</span>
+            <input name="end"    value="#f57900" type="color" maxlength="7" />
+            <select name="direction">
+              <option value="up">Up</option>
+              <option value="down" selected="selected">Down</option>
+              <option value="left">Left</option>
+              <option value="right">Right</option>
+            </select>
+            <button type="submit">Create!</button>
+          </form>
+        </section>
       </div>
       <footer>
-	    <p>
+        <p>
           <img src="http://code.google.com/appengine/images/appengine-silver-120x30.gif" alt="Powered by Google App Engine" />
-	      <a href="https://launchpad.net/webgradients">Open source app</a> by <a href="https://launchpad.net/~lol2fast4u">MyFreeWeb</a>.
-	      <strong>Follow me on <a href="http://twitter.com/myfreeweb">Twitter</a></strong> and subscribe to <a href="http://en.myfreeweb.ru">my blog</a>.
+	        <a href="https://github.com/myfreeweb/webgradients">Open source app</a> by <a href="http://myfreeweb.ru">MyFreeWeb</a>.
+          <strong>Follow me on <a href="http://twitter.com/myfreeweb">Twitter</a></strong>!
         </p>
         <p><script type="text/javascript" src="http://www.ohloh.net/p/481211/widgets/project_thin_badge.js"></script></p>
       </footer>
