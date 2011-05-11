@@ -48,23 +48,23 @@ func hex_to_rgb(s string) image.NRGBAColor {
   b, _ := hex.DecodeString(s)
   return image.NRGBAColor{b[0], b[1], b[2], 0xff}
 }
-func gradient(i *image.NRGBA, s string, e string, horiz bool, inv bool) {
+func gradient(i *image.NRGBA, s string, e string, dir string) {
   start := hex_to_rgb(s)
   end := hex_to_rgb(e)
-  if inv == true {
+  if dir == "left" || dir = "up" {
     start = end
     end = hex_to_rgb(s)
   }
   height := i.Rect.Max.Y
   width := i.Rect.Max.X
   wh := height
-  if horiz == true {
+  if dir == "left" || dir == "right" {
     wh = width
   }
   for y := 0; y < height; y++ {
     for x := 0; x < width; x++ {
       d := y
-      if horiz == true {
+      if dir == "left" || dir == "right" {
         d = x
       }
       i.Set(x, y, image.NRGBAColor{
@@ -81,26 +81,14 @@ func init() {
   http.HandleFunc("/make", handler)
 }
 
-
 func handler(w http.ResponseWriter, r *http.Request) {
   width := getnum(r, "width", 1)
   height := getnum(r, "height", 100)
-  if width > 4096 || height > 4096 {
-    w.
-  }
   start := getcolor(r, "start", "eeeeec")
   end := getcolor(r, "end", "d3d7cf")
   direction := getstr(r, "direction", "down")
   image := image.NewNRGBA(width, height)
-  if direction == "up" {
-    gradient(image, start, end, false, true)
-  } else if direction == "down" {
-    gradient(image, start, end, false, false)
-  } else if direction == "left" {
-    gradient(image, start, end, true, true)
-  } else if direction == "right" {
-    gradient(image, start, end, true, false)
-  }
+  gradient(image, start, end, direction)
   w.Header().Set("Content-Type", "image/png")
   _ = png.Encode(w, image)
 }
