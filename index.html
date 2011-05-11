@@ -13,11 +13,11 @@
   <body>
     <div id="wrapper">
       <header>
-	<h1>Web Gradients</h1>
+  	    <h1>Web Gradients</h1>
       </header>
       <div>
 	<p>Web Gradients is a tool for creating simple and smooth <abbr title="Portable Network Graphics">PNG</abbr> linear gradients with plain <abbr title="HyperText Transfer Protocol">HTTP</abbr> requests (or this page).</p>
-	<p>Just a GET to /make?width=(pixels)&amp;height=(pixels)&amp;start=(hex)&amp;end=(hex). All parameters are optional. Default width is 1 pixel, height - 100. Default start color is <span class="advice" style="color: #eeeeec;">eeeeec</span>, end is <span class="advice" style="color: #d3d7cf;">d3d7cf</span>.</p>
+	<p>Just a GET to /make?width=(pixels)&amp;height=(pixels)&amp;start=(hex)&amp;end=(hex)&direction=(up|down|left|right). All parameters are optional. Default width is 1 pixel, height - 100. Default start color is <span class="advice" style="color: #eeeeec;">eeeeec</span>, end is <span class="advice" style="color: #d3d7cf;">d3d7cf</span>.</p>
 	<section id="demos">
 	  <div><img class="gradient" src="/make?width=150&amp;height=150" alt="Example" title="Example of a 150*150px gradient displayed with img tag" /></div>
 	  <div id="biggr" class="gradient" title="Example of a 1px wide gradient repeated by CSS" style="background: url('/make?height=150&amp;end=fcaf3e') repeat-x; "></div>
@@ -27,7 +27,13 @@
 	    <input name="width"  value="320" type="number" maxlength="3" />* <span class="swap" id="sizeswap">&larr;&rarr;</span>
 	    <input name="height" value="240" type="number" maxlength="3" />px&nbsp;/&nbsp;
 	    <input name="start"  value="#fcaf3e" type="color" maxlength="7" /> <span class="swap" id="colswap">&larr;&rarr;</span>
-	    <input name="end"    value="#f57900" type="color" maxlength="7" />
+      <input name="end"    value="#f57900" type="color" maxlength="7" />
+      <select name="direction">
+        <option value="up">Up</option>
+        <option value="down" selected="selected">Down</option>
+        <option value="left">Left</option>
+        <option value="right">Right</option>
+      </select>
 	    <button type="submit">Create!</button>
 	  </form>
 	</section>
