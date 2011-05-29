@@ -16,14 +16,16 @@ package webg
 
 import (
   "io"
+  "fmt"
   "http"
+  "bytes"
   "image"
   "image/png"
   "encoding/hex"
   "strings"
   "strconv"
-// 	"appengine"
-//	"appengine/memcache"
+ 	"appengine"
+	"appengine/memcache"
 )
 
 // Getting values from HTTP GET. DRY, isn't it?
@@ -99,9 +101,22 @@ func handler(w http.ResponseWriter, r *http.Request) {
   start := getcolor(r, "start", "eeeeec")
   end := getcolor(r, "end", "d3d7cf")
   direction := getstr(r, "direction", "down")
-//  cachekey := fmt.Sprintf("%sx%s_%s_%s_%s", strconv.Itoa(width), strconv.Itoa(height), start, end, direction)
+  cachekey := fmt.Sprintf("%sx%s_%s_%s_%s", strconv.Itoa(width), strconv.Itoa(height), start, end, direction)
+  c := appengine.NewContext(r)
   w.Header().Set("Content-Type", "image/png")
-  image := image.NewNRGBA(width, height)
-  gradient(image, start, end, direction)
-  _ = png.Encode(w, image)
+  if pic, err := memcache.Get(c, cachekey); err == memcache.ErrCacheMiss {
+    buf := new(bytes.Buffer)
+    image := image.NewNRGBA(width, height)
+    gradient(image, start, end, direction)
+    png.Encode(buf, image)
+    memcache.Add(c, &memcache.Item{
+      Key: cachekey,
+      Value: buf.Bytes(),
+    })
+    io.Copy(w, buf)
+  } else if err == nil {
+    w.Write(pic.Value)
+  } else {
+    error(w, "Some weird error")
+  }
 }
