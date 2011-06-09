@@ -56,23 +56,26 @@ func gradient(i *image.NRGBA, s, e, dir string) {
 	var start, end string
 	if dir == "left" || dir == "up" {
 		start = hex_to_rgb(e)
-		end = hex_to_rgb(s)
+		end   = hex_to_rgb(s)
 	} else {
 		start = hex_to_rgb(s)
-		end = hex_to_rgb(e)
+		end   = hex_to_rgb(e)
 	}
 	height := i.Rect.Max.Y
-	width := i.Rect.Max.X
+	width  := i.Rect.Max.X
 	var wh int
+	var horiz bool
 	if dir == "left" || dir == "right" {
 		wh = width
+		horiz = true
 	} else {
 		wh = height
+		horiz = false
 	}
 	for y := 0; y < height; y++ {
 		for x := 0; x < width; x++ {
 			var d int
-			if dir == "left" || dir == "right" {
+			if horiz == true {
 				d = x
 			} else {
 				d = y
