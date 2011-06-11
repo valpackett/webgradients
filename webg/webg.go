@@ -53,7 +53,7 @@ func hex_to_rgb(s string) image.NRGBAColor {
 	return image.NRGBAColor{b[0], b[1], b[2], 0xff}
 }
 func gradient(i *image.NRGBA, s, e, dir string) {
-	var start, end string
+	var start, end image.NRGBAColor
 	if dir == "left" || dir == "up" {
 		start = hex_to_rgb(e)
 		end   = hex_to_rgb(s)
