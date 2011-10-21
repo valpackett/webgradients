@@ -1,6 +1,6 @@
 package webg
 //  Web Gradients
-//  Copyright 2011 Grigory V. <me@myfreeweb.ru>
+//  Copyright 2011 Grigory V. <floatboth@me.com>
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package webg
 import (
 	"io"
 	"fmt"
+	"url"
 	"http"
 	"bytes"
 	"image"
@@ -32,7 +33,7 @@ import (
 func getstr(r *http.Request, s, def string) string {
 	val := r.FormValue(s)
 	if val != "" {
-		res, _ := http.URLUnescape(val)
+		res, _ := url.QueryUnescape(val)
 		return res
 	}
 	return def
