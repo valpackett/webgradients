@@ -30,26 +30,9 @@ import (
 	"appengine/memcache"
 )
 
-// Getting values from HTTP GET. DRY, isn't it?
-func getstr(r *http.Request, s, def string) string {
-	val := r.FormValue(s)
-	if val != "" {
-		res, _ := url.QueryUnescape(val)
-		return res
-	}
-	return def
-}
-
-func getnum(r *http.Request, s string, def int) int {
-	res, _ := strconv.Atoi(getstr(r, s, strconv.Itoa(def)))
-	return res
-}
-
-func getcolor(r *http.Request, s, def string) string {
-	return strings.Replace(getstr(r, s, def), "#", "", -1)
-}
-
-// The core. Hardcore.
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+// Gradients
+///////////////////////////////////////////////////////////////////////////////////////////////////////
 func hex_to_rgb(s string) color.NRGBA {
 	b, _ := hex.DecodeString(s)
 	return color.NRGBA{b[0], b[1], b[2], 0xff}
@@ -91,7 +74,27 @@ func gradient(i *image.NRGBA, s, e, dir string) {
 	}
 }
 
-// Whoah!
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+// HTTP
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+func getstr(r *http.Request, s, def string) string {
+	val := r.FormValue(s)
+	if val != "" {
+		res, _ := url.QueryUnescape(val)
+		return res
+	}
+	return def
+}
+
+func getnum(r *http.Request, s string, def int) int {
+	res, _ := strconv.Atoi(getstr(r, s, strconv.Itoa(def)))
+	return res
+}
+
+func getcolor(r *http.Request, s, def string) string {
+	return strings.Replace(getstr(r, s, def), "#", "", -1)
+}
+
 func init() {
 	http.HandleFunc("/make", handler)
 }
