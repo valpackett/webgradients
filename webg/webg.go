@@ -15,19 +15,19 @@
 package webg
 
 import (
-	"io"
-	"fmt"
-	"net/url"
-	"net/http"
+	"appengine"
+	"appengine/memcache"
 	"bytes"
+	"encoding/hex"
+	"fmt"
 	"image"
 	"image/color"
 	"image/png"
-	"encoding/hex"
-	"strings"
+	"io"
+	"net/http"
+	"net/url"
 	"strconv"
-	"appengine"
-	"appengine/memcache"
+	"strings"
 )
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -42,13 +42,13 @@ func gradient(i *image.NRGBA, s, e, dir string) {
 	var start, end color.NRGBA
 	if dir == "left" || dir == "up" {
 		start = hex_to_rgb(e)
-		end   = hex_to_rgb(s)
+		end = hex_to_rgb(s)
 	} else {
 		start = hex_to_rgb(s)
-		end   = hex_to_rgb(e)
+		end = hex_to_rgb(e)
 	}
 	height := i.Rect.Max.Y
-	width  := i.Rect.Max.X
+	width := i.Rect.Max.X
 	var wh float32
 	var horiz bool
 	if dir == "left" || dir == "right" {
@@ -62,9 +62,9 @@ func gradient(i *image.NRGBA, s, e, dir string) {
 		for x := 0; x < width; x++ {
 			var d float32
 			if horiz == true {
-				d = float32(x)/wh
+				d = float32(x) / wh
 			} else {
-				d = float32(y)/wh
+				d = float32(y) / wh
 			}
 			i.Set(x, y, color.NRGBA{
 				uint8(int(start.R) + int(d*float32(int(end.R)-int(start.R)))),
