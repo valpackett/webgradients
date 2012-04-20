@@ -37,6 +37,7 @@ func hex_to_rgb(s string) color.NRGBA {
 	b, _ := hex.DecodeString(s)
 	return color.NRGBA{b[0], b[1], b[2], 0xff}
 }
+
 func gradient(i *image.NRGBA, s, e, dir string) {
 	var start, end color.NRGBA
 	if dir == "left" || dir == "up" {
@@ -95,10 +96,6 @@ func getcolor(r *http.Request, s, def string) string {
 	return strings.Replace(getstr(r, s, def), "#", "", -1)
 }
 
-func init() {
-	http.HandleFunc("/make", handler)
-}
-
 func error(w http.ResponseWriter, t string) {
 	w.WriteHeader(http.StatusInternalServerError)
 	w.Header().Set("Content-Type", "text/plain")
@@ -133,4 +130,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		error(w, "Some weird error")
 	}
+}
+
+func init() {
+	http.HandleFunc("/make", handler)
 }
