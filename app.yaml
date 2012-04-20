@@ -1,4 +1,4 @@
-application: webgradients
+application: webgradients-go
 version: 2
 runtime: go
 api_version: 3
