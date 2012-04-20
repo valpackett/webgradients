@@ -17,10 +17,11 @@ package webg
 import (
 	"io"
 	"fmt"
-	"url"
-	"http"
+	"net/url"
+	"net/http"
 	"bytes"
 	"image"
+	"image/color"
 	"image/png"
 	"encoding/hex"
 	"strings"
@@ -49,12 +50,12 @@ func getcolor(r *http.Request, s, def string) string {
 }
 
 // The core. Hardcore.
-func hex_to_rgb(s string) image.NRGBAColor {
+func hex_to_rgb(s string) color.NRGBA {
 	b, _ := hex.DecodeString(s)
-	return image.NRGBAColor{b[0], b[1], b[2], 0xff}
+	return color.NRGBA{b[0], b[1], b[2], 0xff}
 }
 func gradient(i *image.NRGBA, s, e, dir string) {
-	var start, end image.NRGBAColor
+	var start, end color.NRGBA
 	if dir == "left" || dir == "up" {
 		start = hex_to_rgb(e)
 		end   = hex_to_rgb(s)
@@ -62,29 +63,29 @@ func gradient(i *image.NRGBA, s, e, dir string) {
 		start = hex_to_rgb(s)
 		end   = hex_to_rgb(e)
 	}
-	height := &i.Rect.Max.Y
-	width  := &i.Rect.Max.X
-	var wh *int
+	height := i.Rect.Max.Y
+	width  := i.Rect.Max.X
+	var wh float32
 	var horiz bool
 	if dir == "left" || dir == "right" {
-		wh = &width
+		wh = float32(width)
 		horiz = true
 	} else {
-		wh = &height
+		wh = float32(height)
 		horiz = false
 	}
 	for y := 0; y < height; y++ {
 		for x := 0; x < width; x++ {
-			var d *int
+			var d float32
 			if horiz == true {
-				d = &x
+				d = float32(x)/wh
 			} else {
-				d = &y
+				d = float32(y)/wh
 			}
-			i.Set(x, y, image.NRGBAColor{
-				uint8(int(start.R) + int(float32(d)/float32(wh)*float32(int(end.R)-int(start.R)))),
-				uint8(int(start.G) + int(float32(d)/float32(wh)*float32(int(end.G)-int(start.G)))),
-				uint8(int(start.B) + int(float32(d)/float32(wh)*float32(int(end.B)-int(start.B)))),
+			i.Set(x, y, color.NRGBA{
+				uint8(int(start.R) + int(d*float32(int(end.R)-int(start.R)))),
+				uint8(int(start.G) + int(d*float32(int(end.G)-int(start.G)))),
+				uint8(int(start.B) + int(d*float32(int(end.B)-int(start.B)))),
 				255})
 		}
 	}
@@ -116,7 +117,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "image/png")
 	if pic, err := memcache.Get(c, cachekey); err == memcache.ErrCacheMiss {
 		buf := new(bytes.Buffer)
-		image := image.NewNRGBA(width, height)
+		image := image.NewNRGBA(image.Rect(0, 0, width, height))
 		gradient(image, start, end, direction)
 		png.Encode(buf, image)
 		memcache.Add(c, &memcache.Item{
